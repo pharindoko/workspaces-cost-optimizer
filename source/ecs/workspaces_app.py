@@ -108,20 +108,20 @@ my_region = my_session.region_name
 if stackParams['OnlyInCurrentRegion'] == 'Yes':
     wsRegions = [my_region]
 else: 
-if 'gov' in my_region:
-    partition = 'aws-us-gov'
-elif 'cn' in my_region:
-    partition = 'aws-cn'
-else:
-    partition = 'aws'
+    if 'gov' in my_region:
+        partition = 'aws-us-gov'
+    elif 'cn' in my_region:
+        partition = 'aws-cn'
+    else:
+        partition = 'aws'
 
-log.debug("Partition is {}".format(partition))
+    log.debug("Partition is {}".format(partition))
 
-try:
-    wsRegions = boto3.session.Session().get_available_regions('workspaces', partition)
-except Exception as e:
-    log.error("Error getting the regions for the workspaces : {}".format(e))
-    raise
+    try:
+        wsRegions = boto3.session.Session().get_available_regions('workspaces', partition)
+    except Exception as e:
+        log.error("Error getting the regions for the workspaces : {}".format(e))
+        raise
 
 # Iterate over list of AWS Regions
 for wsRegion in wsRegions:
